@@ -10,7 +10,7 @@ exports.handler = async ({ body, headers }, context) => {
       headers["stripe-signature"],
       process.env.STRIPE_WEBHOOK_SECRET
     );
-
+    console.log(stripeEvent.type);
     // bail if this is not a subscription update event
     if (stripeEvent.type !== "customer.subscription.updated") return;
 
