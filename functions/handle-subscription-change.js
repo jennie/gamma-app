@@ -10,7 +10,6 @@ exports.handler = async ({ body, headers }, context) => {
       headers["stripe-signature"],
       process.env.STRIPE_WEBHOOK_SECRET
     );
-    console.log(stripeEvent.type);
     // bail if this is not a subscription update event
     if (stripeEvent.type !== "customer.subscription.updated") return;
 
@@ -32,9 +31,12 @@ exports.handler = async ({ body, headers }, context) => {
     const { netlifyID } = result.data.getUserByStripeID;
 
     // take the first word of the plan name and use it as the role
-    console.log(subscription);
+
     const plan = subscription.items.data[0].plan.nickname;
-    //,etadata
+    const product = await stripe.products.retrieve(
+      subscription.items.data[0].plan.product
+    );
+    console.log(product);
     const role = plan.split(" ")[0].toLowerCase();
 
     // send a call to the Netlify Identity admin API to update the user role
