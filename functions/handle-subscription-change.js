@@ -32,8 +32,9 @@ exports.handler = async ({ body, headers }, context) => {
     const { netlifyID } = result.data.getUserByStripeID;
 
     // take the first word of the plan name and use it as the role
-    console.log(subscription.items.data[0]);
+    console.log(subscription);
     const plan = subscription.items.data[0].plan.nickname;
+    //,etadata
     const role = plan.split(" ")[0].toLowerCase();
 
     // send a call to the Netlify Identity admin API to update the user role
